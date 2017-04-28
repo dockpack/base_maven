@@ -44,31 +44,76 @@
   tags:
     - maven
 
-- name: 'set JAVA_HOME on Debian'
+- name: 'set java_top on Debian'
   become: yes
   set_fact:
-    JAVA_HOME: '/usr/lib/jvm/jdk1.8.0_111'
+    java8_top: '/usr/lib/jvm/'
   when: ansible_os_family == 'Debian'
   tags:
     - maven
+    - maven_test
+    - test
 
-- name: 'set JAVA_HOME on RedHat'
+- name: 'set java_top on RedHat'
   become: yes
   set_fact:
-    JAVA_HOME: '/usr/java/jdk1.8.0_111'
+    java8_top: '/usr/java/jvm'
   when: ansible_os_family == 'RedHat'
   tags:
     - maven
+    - maven_test
+    - test
+
+- name: 'this is JAVA_HOME'
+  set_fact:
+    java8_home: "{{ java8_top }}/{{ java8_name }}"
+  tags:
+    - maven
+    - maven_test
+    - test
+
+- name: 'this is JAVA_HOME'
+  debug:
+    msg: "JAVA_HOME={{ java8_home }}"
+  tags:
+    - maven
+    - maven_test
+    - test
+
+- name: 'Test for presence of maven'
+  environment:
+    JAVA_HOME: "{{ java8_home }}"
+  stat: path={{ maven_home }}/bin/mvn
+  tags:
+    - maven
+    - maven_test
+    - test
+
+- name: 'Test running maven --version'
+  environment:
+    JAVA_HOME: "{{ java8_home }}"
+  command: "{{ maven_home }}/bin/mvn --version"
+  changed_when: no
+  tags:
+    - maven
+    - maven_test
+    - test
 
 - name: 'check if settings-security has been set'
+  environment:
+    JAVA_HOME: "{{ java8_home }}"
   stat:
     path: "{{ ant_base }}/{{ ant_name }}/bin/ant"
   register: maven_setting_installed
+  tags:
+    - maven
+    - maven_test
+    - test
 
 - name: 'create master password for Maven'
   become: yes
   environment:
-    JAVA_HOME: "{{ JAVA_HOME }}"
+    JAVA_HOME: "{{ java8_home }}"
   command: "{{ maven_home }}/bin/mvn --encrypt-master-password {{ mvn_master_password}}"
   register: encrypted_mvn_password
   when: features.maven and not maven_setting_installed
@@ -85,7 +130,7 @@
 - name: 'create repository password for Maven'
   become: yes
   environment:
-    JAVA_HOME: "{{ JAVA_HOME }}"
+    JAVA_HOME: "{{ java8_home }}"
   command: "{{ maven_home }}/bin/mvn --encrypt-password {{ mvn_repo_password}}"
   register: mvn_repository_password
   when: features.maven and not maven_setting_installed
@@ -114,19 +159,4 @@
   tags:
     - maven
 
-- name: 'Test for presence of maven'
-  environment:
-    JAVA_HOME: "{{ JAVA_HOME }}"
-  stat: path={{ maven_home }}/bin/mvn
-  tags:
-    - maven
-    - test
 
-- name: 'Test running maven --version'
-  environment:
-    JAVA_HOME: "{{ JAVA_HOME }}"
-  command: "{{ maven_home }}/bin/mvn --version"
-  changed_when: no
-  tags:
-    - maven
-    - test
