@@ -6,7 +6,7 @@ Maven - Maven is good at building Java projects in a cross-platform way. It mana
 Requirements
 ------------
 
-This role was built for Ubuntu Trustym or RedHat systems like RHEL 6, Centos 6. It needs bbaassssiiee.base_java8.
+This role was built for Ubuntu Trusty or RedHat systems like RHEL 6, Centos 7. It needs bbaassssiiee.base_java8.
 
 Role Variables
 --------------
