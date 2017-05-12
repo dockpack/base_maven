@@ -1,3 +1,5 @@
+---
+
 mvn_master_password: you_need_to_set_this_in_your_secrets_file
 mvn_repo_username: deployer
 mvn_repo_password: encryptit

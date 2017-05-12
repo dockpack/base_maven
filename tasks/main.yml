@@ -1,4 +1,5 @@
 ---
+
 ### Maven
 - name: 'make sure directory for Maven exists'
   file: dest={{ maven_home }} state=directory owner=root group=root mode=0755
