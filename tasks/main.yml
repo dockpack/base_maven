@@ -1,6 +1,15 @@
 ---
 
 ### Maven
+
+- name: set maven_name
+  set_fact:
+    maven_name: "apache-maven-{{maven_version}}"
+
+- name: set maven_home
+  set_fact:
+    maven_home: "{{ maven_location }}/{{ maven_name }}"
+
 - name: 'make sure directory for Maven exists'
   file: dest={{ maven_home }} state=directory owner=root group=root mode=0755
   tags:
