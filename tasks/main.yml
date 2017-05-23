@@ -54,42 +54,6 @@
   tags:
     - maven
 
-- name: 'set java_top on Debian'
-  become: yes
-  set_fact:
-    java8_top: '/usr/lib/jvm/'
-  when: ansible_os_family == 'Debian'
-  tags:
-    - maven
-    - maven_test
-    - test
-
-- name: 'set java_top on RedHat'
-  become: yes
-  set_fact:
-    java8_top: '/usr/java/jvm'
-  when: ansible_os_family == 'RedHat'
-  tags:
-    - maven
-    - maven_test
-    - test
-
-- name: 'this is JAVA_HOME'
-  set_fact:
-    java8_home: "{{ java8_top }}/{{ java8_name }}"
-  tags:
-    - maven
-    - maven_test
-    - test
-
-- name: 'this is JAVA_HOME'
-  debug:
-    msg: "JAVA_HOME={{ java8_home }}"
-  tags:
-    - maven
-    - maven_test
-    - test
-
 - name: 'Test for presence of maven'
   environment:
     JAVA_HOME: "{{ java8_home }}"
@@ -113,7 +77,7 @@
   environment:
     JAVA_HOME: "{{ java8_home }}"
   stat:
-    path: "{{ ant_base }}/{{ ant_name }}/bin/ant"
+    path: "{{ maven_home }}/bin/ant"
   register: maven_setting_installed
   tags:
     - maven
