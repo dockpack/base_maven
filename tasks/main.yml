@@ -22,13 +22,23 @@
   tags:
     - maven
 
+- name: 'install maven facts'
+  template:
+    src: maven.fact
+    dest: /etc/ansible/facts.d/maven.fact
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - maven
+
 - name: 'unarchive maven'
   unarchive:
     src: "{{  maven_url }}"
     dest: "{{  maven_location }}"
     copy: no
   retries: 3
-  when: features.maven and not mvn_installed.stat.exists
+  when: not mvn_installed.stat.exists
   tags:
     - maven
 
@@ -90,14 +100,14 @@
     JAVA_HOME: "{{ java8_home }}"
   command: "{{ maven_home }}/bin/mvn --encrypt-master-password {{ mvn_master_password}}"
   register: encrypted_mvn_password
-  when: features.maven and not maven_setting_installed
+  when: not maven_setting_installed
   tags:
     - maven
 
 - name: 'install settings-security.xml'
   become: yes
   template: src=settings-security-xml.j2 dest=/root/.m2/settings-security.xml mode=0600 owner=root group=root
-  when: features.maven and not maven_setting_installed
+  when: not maven_setting_installed
   tags:
     - maven
 
@@ -107,7 +117,7 @@
     JAVA_HOME: "{{ java8_home }}"
   command: "{{ maven_home }}/bin/mvn --encrypt-password {{ mvn_repo_password}}"
   register: mvn_repository_password
-  when: features.maven and not maven_setting_installed
+  when: not maven_setting_installed
   tags:
     - maven
 
@@ -118,7 +128,7 @@
   tags:
     - config
     - maven
-  when: features.maven and not maven_setting_installed
+  when: not maven_setting_installed
 
 - name: 'install /etc/profile.d/maven.sh'
   template: src=etc-profile-d-maven-sh.j2 dest=/etc/profile.d/maven.sh
@@ -126,11 +136,4 @@
   when: features.maven
   tags:
     - maven
-
-- name: 'make sure maven directory is absent'
-  file: dest={{ maven_home }} state=absent
-  when: not features.maven
-  tags:
-    - maven
-
 

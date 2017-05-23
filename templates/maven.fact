@@ -1,0 +1,3 @@
+[maven]
+maven_name={{ maven_name }}
+maven_home={{ maven_home }}
