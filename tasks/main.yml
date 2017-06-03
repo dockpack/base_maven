@@ -5,10 +5,15 @@
 - name: set maven_name
   set_fact:
     maven_name: "apache-maven-{{maven_version}}"
-
+  tags:
+    - maven
+    - test
 - name: set maven_home
   set_fact:
     maven_home: "{{ maven_location }}/{{ maven_name }}"
+  tags:
+    - maven
+    - test
 
 - name: 'make sure directory for Maven exists'
   file: dest={{ maven_home }} state=directory owner=root group=root mode=0755
@@ -31,6 +36,10 @@
     mode: 0644
   tags:
     - maven
+
+- setup:
+  tags:
+    - test
 
 - name: 'unarchive maven'
   unarchive:
