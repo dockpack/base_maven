@@ -37,7 +37,7 @@
   tags:
     - maven
 
-- 'reload local facts'
+- name: 'reload local facts'
   setup:
   tags:
     - test
