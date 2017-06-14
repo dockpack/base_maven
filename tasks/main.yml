@@ -53,8 +53,10 @@
     - maven
 
 - name: 'fix maven permissions'
-  file:  dest={{ maven_home }}/{{item}}
-         state=directory mode=0755
+  file:
+    dest: "{{ maven_home }}/{{item}}"
+    state: directory
+    mode: 0755
   with_items:
     - bin
     - boot
@@ -63,13 +65,23 @@
     - maven
 
 - name: 'make sure .m2 directory exists'
-  file: path={{ maven_location }}/.m2 owner=root group=root mode=0750 state=directory
+  file:
+    path: "{{ maven_location }}/.m2"
+    owner: root
+    group: root
+    mode: 0750
+    state: directory
   when: features.maven
   tags:
     - maven
 
 - name: 'make sure /root/.m2 directory exists'
-  file: path=/root/.m2 owner=root group=root mode=0750 state=directory
+  file:
+    path: '/root/.m2'
+    owner: root
+    group: root
+    mode: 0750
+    state: directory
   when: features.maven
   tags:
     - maven
@@ -116,7 +128,12 @@
 
 - name: 'install settings-security.xml'
   become: yes
-  template: src=settings-security-xml dest=/root/.m2/settings-security.xml mode=0600 owner=root group=root
+  template:
+    src: settings-security-xml
+    dest: '/root/.m2/settings-security.xml'
+    mode: 0600
+    owner: root
+    group: root
   when: not maven_setting_installed
   tags:
     - maven
@@ -133,17 +150,23 @@
 
 - name: 'create settings.xml'
   become: yes
-  template: src=settings_xml dest={{ maven_location }}/.m2/settings.xml
-            owner=root mode=0644
+  template:
+    src: settings_xml
+    dest: "{{ maven_location }}/.m2/settings.xml"
+    owner: root
+    mode: 0644
   tags:
     - config
     - maven
   when: not maven_setting_installed
 
 - name: 'install /etc/profile.d/maven.sh'
-  template: src=etc-profile-d-maven-sh dest=/etc/profile.d/maven.sh
-          owner=root group=root mode=0644
+  template:
+    src: 'etc-profile-d-maven-sh'
+    dest: '/etc/profile.d/maven.sh'
+    owner: root
+    group: root
+    mode: 0644
   when: features.maven
   tags:
     - maven
-
