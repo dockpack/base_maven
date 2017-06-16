@@ -4,7 +4,7 @@
 
 - name: set maven_name
   set_fact:
-    maven_name: "apache-maven-{{maven_version}}"
+    maven_name: "apache-maven-{{ maven_version }}"
   tags:
     - maven
     - test
@@ -16,12 +16,18 @@
     - test
 
 - name: 'make sure directory for Maven exists'
-  file: dest={{ maven_home }} state=directory owner=root group=root mode=0755
+  file:
+    dest: "{{ maven_home }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
   tags:
     - maven
 
 - name: 'verify presence of maven'
-  stat: path={{ maven_home }}/bin/mvn
+  stat:
+    path: "{{ maven_home }}/bin/mvn"
   register: mvn_installed
   when: features.maven
   tags:
@@ -54,7 +60,7 @@
 
 - name: 'fix maven permissions'
   file:
-    dest: "{{ maven_home }}/{{item}}"
+    dest: "{{ maven_home }}/{{ item }}"
     state: directory
     mode: 0755
   with_items:
@@ -89,7 +95,8 @@
 - name: 'Test for presence of maven'
   environment:
     JAVA_HOME: "{{ java8_home }}"
-  stat: path={{ maven_home }}/bin/mvn
+  stat:
+    path: "{{ maven_home }}/bin/mvn"
   tags:
     - maven
     - maven_test
@@ -121,7 +128,7 @@
   environment:
     JAVA_HOME: "{{ java8_home }}"
   command:
-    "{{ maven_home }}/bin/mvn --encrypt-master-password {{mvn_master_password}}"
+    "{{ maven_home }}/bin/mvn --encrypt-master-password {{ mvn_master_password }}"
   register: encrypted_mvn_password
   when: not maven_setting_installed
   tags:
@@ -143,7 +150,7 @@
   become: yes
   environment:
     JAVA_HOME: "{{ java8_home }}"
-  command: "{{ maven_home }}/bin/mvn --encrypt-password {{ mvn_repo_password}}"
+  command: "{{ maven_home }}/bin/mvn --encrypt-password {{ mvn_repo_password }}"
   register: mvn_repository_password
   when: not maven_setting_installed
   tags:

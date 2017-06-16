@@ -6,9 +6,9 @@ mvn_repo_password: encryptit
 
 maven_version: 3.5.0
 
-maven_tarfile: "{{maven_name}}-bin.tar.gz"
+maven_tarfile: "{{ maven_name }}-bin.tar.gz"
 maven_base_url: 'http://ftp.tudelft.nl/apache/maven/maven-3'
-maven_url: "{{ maven_base_url }}/{{maven_version}}/binaries/{{maven_tarfile}}"
+maven_url: "{{ maven_base_url }}/{{ maven_version }}/binaries/{{ maven_tarfile }}"
 maven_location: '/opt/maven'
 
 

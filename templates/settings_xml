@@ -1,5 +1,5 @@
 <settings>
-  <localRepository>{{jenkins_data}}/repository</localRepository>
+  <localRepository>{{ jenkins_data }}/repository</localRepository>
   <servers>
     <server>
       <id>central</id>
@@ -15,7 +15,7 @@
 
   <profiles>
     <profile>
-      <id>{{mavenprofilename}}</id>
+      <id>{{ mavenprofilename }}</id>
       <repositories>
         <repository>
           <id>central</id>
@@ -23,14 +23,14 @@
             <enabled>false</enabled>
           </snapshots>
           <name>releases</name>
-          <url>{{maven_releases_url}}
+          <url>{{ maven_releases_url }}
           </url>
         </repository>
         <repository>
           <id>snapshots</id>
           <snapshots />
           <name>snapshots</name>
-          <url>{{maven_snapshots_url}}
+          <url>{{ maven_snapshots_url }}
           </url>
         </repository>
       </repositories>
@@ -41,7 +41,7 @@
       <mirrorOf>*</mirrorOf>
       <id>artifactory</id>
       <name>Artifactory</name>
-      <url>{{maven_mirror_url}}</url>
+      <url>{{ maven_mirror_url }}</url>
     </mirror>
   </mirrors>
 </settings>
