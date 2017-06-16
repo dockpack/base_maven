@@ -7,11 +7,12 @@ mvn_repo_password: encryptit
 maven_version: 3.5.0
 
 maven_tarfile: "{{maven_name}}-bin.tar.gz"
-maven_url: http://ftp.tudelft.nl/apache/maven/maven-3/{{maven_version}}/binaries/{{maven_tarfile}}
+maven_base_url: 'http://ftp.tudelft.nl/apache/maven/maven-3'
+maven_url: "{{ maven_base_url }}/{{maven_version}}/binaries/{{maven_tarfile}}"
 maven_location: '/opt/maven'
 
 
 mavenprofilename: profile
-maven_mirror_url: "https://dev/artifactory/repo"
-maven_snapshots_url: https://dev/artifactory/libs-snapshot
-maven_releases_url: https://dev/artifactory/libs-release
+maven_mirror_url: 'https://dev/artifactory/repo'
+maven_snapshots_url: 'https://dev/artifactory/libs-snapshot'
+maven_releases_url: 'https://dev/artifactory/libs-release'

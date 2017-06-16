@@ -120,7 +120,8 @@
   become: yes
   environment:
     JAVA_HOME: "{{ java8_home }}"
-  command: "{{ maven_home }}/bin/mvn --encrypt-master-password {{ mvn_master_password}}"
+  command:
+    "{{ maven_home }}/bin/mvn --encrypt-master-password {{mvn_master_password}}"
   register: encrypted_mvn_password
   when: not maven_setting_installed
   tags:
