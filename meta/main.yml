@@ -19,6 +19,9 @@ galaxy_info:
   galaxy_tags:
     - system
     - development
+    - buildserver
+    - centos
+    - ubuntu
 
 dependencies:
   - bbaassssiiee.base_java8
