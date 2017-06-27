@@ -3,8 +3,3 @@
 features:
   maven: True
 
-jenkins_data: "/home/jenkins"
-jenkins_home: "/var/lib/jenkins"
-
-
-java_home: /usr/lib/jvm/java
