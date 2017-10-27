@@ -1,4 +1,4 @@
-bbaassssiiee.maven
+dockpack.maven
 =========
 
 Maven - Maven is good at building Java projects in a cross-platform way. It manages dependencies, and actually the whole life cycle of a project.
