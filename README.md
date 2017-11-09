@@ -1,8 +1,8 @@
 
-![Build Status](https://api.travis-ci.org/dockpack/base_maven.svg)
-
 dockpack.maven
 
+
+![Build Status](https://api.travis-ci.org/dockpack/base_maven.svg)
 
 Maven - Maven is good at building Java projects in a cross-platform way. It manages dependencies, and actually the whole life cycle of a project. This is an ansible-role to install Maven.
 
