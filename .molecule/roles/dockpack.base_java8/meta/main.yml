@@ -1,0 +1,23 @@
+---
+# Standards: 0.2
+galaxy_info:
+  author: Bas Meijer
+  description: Java8 - just another vage acronym.
+  company: bbaassssiiee
+
+  license: MIT
+
+  min_ansible_version: 1.9.0
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - trusty
+  galaxy_tags:
+    - system
+    - development
+
+dependencies: []

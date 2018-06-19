@@ -1,0 +1,9 @@
+[all]
+base-maven-centos ansible_connection=docker
+base-maven-ubuntu ansible_connection=docker
+
+[group1]
+base-maven-centos
+
+[group2]
+base-maven-ubuntu
