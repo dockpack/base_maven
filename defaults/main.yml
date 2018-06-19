@@ -4,13 +4,12 @@ mvn_master_password: you_need_to_set_this_in_your_secrets_file
 mvn_repo_username: deployer
 mvn_repo_password: encryptit
 
-maven_version: 3.5.2
+maven_version: 3.5.3
 
 maven_tarfile: "{{ maven_name }}-bin.tar.gz"
-maven_base_url: 'http://ftp.tudelft.nl/apache/maven/maven-3'
+maven_base_url: 'http://apache.cs.uu.nl/maven/maven-3'
 maven_url: "{{ maven_base_url }}/{{ maven_version }}/binaries/{{ maven_tarfile }}"
 maven_location: '/opt/maven'
-
 
 mavenprofilename: profile
 maven_mirror_url: 'https://dev/artifactory/repo'
