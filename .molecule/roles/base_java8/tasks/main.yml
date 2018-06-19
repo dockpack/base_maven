@@ -1,0 +1,140 @@
+---
+
+- name: Set java_top
+  become: yes
+  set_fact:
+    java8_top: '/usr/lib/jvm'
+  tags:
+    - java8
+    - java8_install
+    - java8_profile
+    - java8_test
+    - java8_alternatives
+    - test
+    - ant_test
+    - maven_test
+    - gradle_test
+
+- name: What java8_rpms
+  when: ansible_os_family == 'RedHat'
+  debug:
+    msg: "{{ java8_rpms }}"
+
+- name: Ensure Java is installed.
+  when: ansible_os_family == 'RedHat'
+  yum:
+    name: "{{ item }}"
+    state: present
+  retries: 5
+  with_items: "{{ java8_rpms }}"
+
+- name: Ensure file is installed for tests
+  when: ansible_os_family == 'RedHat'
+  yum:
+    name: file
+    state: present
+
+- name: What java8_apt
+  when: ansible_os_family == 'Debian'
+  debug:
+    msg: "{{ java8_apt }}"
+
+- name: Ensure python-apt is installed.
+  when: ansible_os_family == 'Debian'
+  apt:
+    name: python-apt
+    state: present
+
+- name: Update apt cache.
+  when: ansible_os_family == 'Debian'
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+  tags:
+    - java8
+    - java8_install
+
+- name: Add apt repository
+  when: ansible_os_family == 'Debian'
+  apt_repository:
+    repo: ppa:openjdk-r/ppa
+    validate_certs: no
+
+- name: Ensure Java is installed.
+  when: ansible_os_family == 'Debian'
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ java8_apt }}"
+
+- name: Make sure java_top exists
+  become: yes
+  file:
+    path: "{{ java8_top }}"
+    state: directory
+    owner: root
+    mode: 0755
+  tags:
+    - java8
+
+- name: This is JAVA_HOME
+  when: ansible_os_family == 'RedHat'
+  set_fact:
+    java8_home: "{{ java8_top }}/java"
+  tags:
+    - java8
+    - java8_test
+    - test
+    - ant_test
+    - maven_test
+    - gradle_test
+
+- name: This is JAVA_HOME
+  when: ansible_os_family == 'Debian'
+  set_fact:
+    java8_home: "{{ java8_top }}/{{ ubuntu_dir }}"
+  tags:
+    - java8
+    - java8_test
+    - test
+    - ant_test
+    - maven_test
+    - gradle_test
+
+- name: Ensure facts can be stored locally
+  file:
+    path: /etc/ansible/facts.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - java8
+
+- name: Install java8 facts
+  template:
+    src: java8.fact
+    dest: /etc/ansible/facts.d/java8.fact
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - java8
+
+- name: Fix JAVA_HOME
+  become: yes
+  template:
+    src: java.sh
+    dest: /etc/profile.d/java.sh
+  tags:
+    - java8
+    - java8_profile
+
+- name: Copy goss tests template
+  template:
+    src: java8_goss.yml
+    dest: /root/java8_goss.yml
+  tags:
+    - java8
+    - java8_profile
+    - test

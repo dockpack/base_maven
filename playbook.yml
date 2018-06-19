@@ -2,4 +2,4 @@
 # Standards: 0.2
 - hosts: all
   roles:
-    - role: dockpack.base_maven
+    - role: base_maven
