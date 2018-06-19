@@ -1,4 +1,4 @@
 ---
 
 - src: https://github.com/dockpack/base_java8.git
-  name: base_java8
+  name: dockpack.base_java8
