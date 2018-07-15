@@ -1,0 +1,27 @@
+---
+# Standards: 0.2
+dependency:
+  name: galaxy
+  requirements_file: requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: base-maven-centos
+    image: milcom/centos7-systemd
+    privileged: True
+  - name: base-maven-ubuntu
+    image: ubuntu
+    privileged: True
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp
+  playbooks:
+    converge: playbook.yml
+  lint:
+    name: ansible-lint
+scenario:
+  name: default
