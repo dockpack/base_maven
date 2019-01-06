@@ -6,12 +6,15 @@
   set_fact:
     maven_name: "apache-maven-{{ maven_version }}"
   tags:
+    - config
     - maven
     - test
+
 - name: set maven_home
   set_fact:
     maven_home: "{{ maven_location }}/{{ maven_name }}"
   tags:
+    - config
     - maven
     - test
 
@@ -31,6 +34,7 @@
   register: mvn_installed
   when: features.maven
   tags:
+    - config
     - maven
 
 - name: 'install maven facts'
@@ -41,11 +45,13 @@
     group: root
     mode: 0644
   tags:
+    - config
     - maven
 
 - name: 'reload local facts'
   setup:
   tags:
+    - config
     - test
 
 - name: 'unarchive maven'
@@ -68,6 +74,7 @@
     - boot
   when: features.maven
   tags:
+    - config
     - maven
 
 - name: 'make sure .m2 directory exists'
@@ -79,6 +86,7 @@
     state: directory
   when: features.maven
   tags:
+    - config
     - maven
 
 - name: 'make sure /root/.m2 directory exists'
@@ -90,6 +98,7 @@
     state: directory
   when: features.maven
   tags:
+    - config
     - maven
 
 - name: 'Test for presence of maven'
@@ -98,6 +107,7 @@
   stat:
     path: "{{ maven_home }}/bin/mvn"
   tags:
+    - config
     - maven
     - maven_test
     - test
@@ -119,6 +129,7 @@
     path: "{{ maven_home }}/bin/ant"
   register: maven_setting_installed
   tags:
+    - config
     - maven
     - maven_test
     - test
@@ -132,6 +143,7 @@
   register: encrypted_mvn_password
   when: not maven_setting_installed
   tags:
+    - config
     - maven
 
 - name: 'install settings-security.xml'
@@ -144,6 +156,7 @@
     group: root
   when: not maven_setting_installed
   tags:
+    - config
     - maven
 
 - name: 'create repository password for Maven'
@@ -154,6 +167,7 @@
   register: mvn_repository_password
   when: not maven_setting_installed
   tags:
+    - config
     - maven
 
 - name: 'create settings.xml'
@@ -177,4 +191,5 @@
     mode: 0644
   when: features.maven
   tags:
+    - config
     - maven
