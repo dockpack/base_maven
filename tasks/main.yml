@@ -18,7 +18,7 @@
     - maven
     - test
 
-- name: 'make sure directory for Maven exists'
+- name: make sure directory for Maven exists
   file:
     dest: "{{ maven_home }}"
     state: directory
@@ -28,16 +28,15 @@
   tags:
     - maven
 
-- name: 'verify presence of maven'
+- name: verify presence of maven
   stat:
     path: "{{ maven_home }}/bin/mvn"
   register: mvn_installed
-  when: features.maven
   tags:
     - config
     - maven
 
-- name: 'install maven facts'
+- name: install maven facts
   template:
     src: maven.fact
     dest: /etc/ansible/facts.d/maven.fact
@@ -48,13 +47,13 @@
     - config
     - maven
 
-- name: 'reload local facts'
+- name: reload local facts
   setup:
   tags:
     - config
     - test
 
-- name: 'unarchive maven'
+- name: unarchive maven
   unarchive:
     src: "{{  maven_url }}"
     dest: "{{  maven_location }}"
@@ -64,7 +63,7 @@
   tags:
     - maven
 
-- name: 'fix maven permissions'
+- name: fix maven permissions
   file:
     dest: "{{ maven_home }}/{{ item }}"
     state: directory
@@ -72,36 +71,33 @@
   with_items:
     - bin
     - boot
-  when: features.maven
   tags:
     - config
     - maven
 
-- name: 'make sure .m2 directory exists'
+- name: make sure .m2 directory exists
   file:
     path: "{{ maven_location }}/.m2"
     owner: root
     group: root
     mode: 0750
     state: directory
-  when: features.maven
   tags:
     - config
     - maven
 
-- name: 'make sure /root/.m2 directory exists'
+- name: make sure /root/.m2 directory exists
   file:
     path: '/root/.m2'
     owner: root
     group: root
     mode: 0750
     state: directory
-  when: features.maven
   tags:
     - config
     - maven
 
-- name: 'Test for presence of maven'
+- name: Test for presence of maven
   environment:
     JAVA_HOME: "{{ java8_home }}"
   stat:
@@ -112,21 +108,24 @@
     - maven_test
     - test
 
-- name: 'Test running maven --version'
+- name: Test running maven --version
   environment:
     JAVA_HOME: "{{ java8_home }}"
   command: "{{ maven_home }}/bin/mvn --version"
   changed_when: no
+  register: maven_version
   tags:
     - maven
     - maven_test
     - test
 
-- name: 'check if settings-security has been set'
-  environment:
-    JAVA_HOME: "{{ java8_home }}"
+- name: display Maven version
+  debug:
+    msg: "molecule login{{ maven_version.stdout }}"
+
+- name: check if maven settings-security has been set
   stat:
-    path: "{{ maven_home }}/bin/ant"
+    path: '{{ maven_location }}/.m2/settings-security.xml'
   register: maven_setting_installed
   tags:
     - config
@@ -134,62 +133,68 @@
     - maven_test
     - test
 
-- name: 'create master password for Maven'
-  become: yes
+- name: create master password for Maven
   environment:
     JAVA_HOME: "{{ java8_home }}"
   command:
-    "{{ maven_home }}/bin/mvn --encrypt-master-password {{ mvn_master_password }}"
+    "{{ maven_home }}/bin/mvn --encrypt-master-password {{ mvn_master_password | default(lookup('pipe','/usr/bin/openssl rand -base64 24')) }}"
   register: encrypted_mvn_password
-  when: not maven_setting_installed
+  no_log: false
+  when: not maven_setting_installed.stat.exists
   tags:
     - config
     - maven
 
-- name: 'install settings-security.xml'
-  become: yes
+- name: install settings-security.xml
   template:
-    src: settings-security-xml
-    dest: '/root/.m2/settings-security.xml'
+    src: settings-security.xml
+    dest: "{{ item.dir }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
     mode: 0600
-    owner: root
-    group: root
-  when: not maven_setting_installed
+  with_items:
+    - dir: "{{ maven_location }}/.m2"
+      owner: root
+    - dir: "/root/.m2"
+      owner: root
+  when: not maven_setting_installed.stat.exists
   tags:
     - config
     - maven
 
-- name: 'create repository password for Maven'
-  become: yes
+- name: create repository password for Maven
   environment:
     JAVA_HOME: "{{ java8_home }}"
-  command: "{{ maven_home }}/bin/mvn --encrypt-password {{ mvn_repo_password }}"
+  command: "{{ maven_home }}/bin/mvn --encrypt-password '{{ mvn_repo_password |default(omit) }}'"
+  no_log: false
   register: mvn_repository_password
-  when: not maven_setting_installed
+  when: not maven_setting_installed.stat.exists
   tags:
     - config
     - maven
 
-- name: 'create settings.xml'
+- name: create settings.xml
   become: yes
   template:
-    src: settings_xml
-    dest: "{{ maven_location }}/.m2/settings.xml"
+    src: settings.xml
+    dest: "{{ item }}/.m2/settings.xml"
     owner: root
     mode: 0644
+  with_items:
+    - /root
+    - "{{ maven_location }}"
   tags:
     - config
     - maven
-  when: not maven_setting_installed
+  when: not maven_setting_installed.stat.exists
 
-- name: 'install /etc/profile.d/maven.sh'
+- name: install /etc/profile.d/maven.sh
   template:
-    src: 'etc-profile-d-maven-sh'
+    src: 'maven.sh.j2'
     dest: '/etc/profile.d/maven.sh'
     owner: root
     group: root
     mode: 0644
-  when: features.maven
   tags:
     - config
     - maven
