@@ -4,14 +4,14 @@ mvn_master_password: you_need_to_set_this_in_your_secrets_file
 mvn_repo_username: deployer
 mvn_repo_password: encryptit
 
-maven_version: 3.5.4
+maven_version: 3.6.0
 
 maven_tarfile: "{{ maven_name }}-bin.tar.gz"
 maven_base_url: 'http://apache.cs.uu.nl/maven/maven-3'
 maven_url: "{{ maven_base_url }}/{{ maven_version }}/binaries/{{ maven_tarfile }}"
 maven_location: '/opt/maven'
 
-mavenprofilename: profile
-maven_mirror_url: 'https://dev/artifactory/repo'
-maven_snapshots_url: 'https://dev/artifactory/libs-snapshot'
-maven_releases_url: 'https://dev/artifactory/libs-release'
+mavenprofilename: allow-snapshots
+# maven_mirror_url: 'https://mycompany.intra/nexus'
+maven_snapshots_url: 'https://oss.sonatype.org/content/repositories/snapshots'
+maven_releases_url: 'https://oss.sonatype.org/content/repositories/releases'

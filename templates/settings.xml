@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <localRepository>{{ maven_location }}/repository</localRepository>
+  <servers>
+    <server>
+      <id>deploy</id>
+      <username>{{ mvn_repo_username }}</username>
+      <password>{{ mvn_repository_password.stdout }}</password>
+    </server>
+    <server>
+      <id>develop</id>
+      <username>{{ mvn_repo_username }}</username>
+      <password>{{ mvn_repository_password.stdout }}</password>
+    </server>
+  </servers>
+  <profiles>
+    <profile>
+      <id>{{ mavenprofilename }}</id>
+      <repositories>
+        <repository>
+          <id>releases</id>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <name>releases</name>
+          <url>{{ maven_releases_url }}</url>
+        </repository>
+        <repository>
+          <id>snapshots</id>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <name>snapshots</name>
+          <url>{{ maven_snapshots_url }}</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>snapshots</id>
+          <url>{{ maven_snapshots_url }}</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+          </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+          <id>releases</id>
+          <url>{{ maven_releases_url }}</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>{{ mavenprofilename }}</activeProfile>
+  </activeProfiles>
+</settings>
