@@ -1,12 +1,14 @@
 ---
-# Standards: 0.2
+
 dependency:
   name: galaxy
   requirements_file: requirements.yml
 driver:
   name: docker
-lint:
-  name: yamllint
+verifier:
+  name: goss
+  lint:
+    name: yamllint
 platforms:
   - name: base-maven-centos7
     image: milcom/centos7-systemd
