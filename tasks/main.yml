@@ -77,6 +77,15 @@
 
 - name: make sure .m2 directory exists
   file:
+    path: ".m2"
+    mode: 0700
+    state: directory
+  tags:
+    - config
+    - maven
+
+- name: make sure .m2 directory exists
+  file:
     path: "{{ maven_location }}/.m2"
     owner: root
     group: root
@@ -113,7 +122,7 @@
     JAVA_HOME: "{{ java8_home }}"
   command: "{{ maven_home }}/bin/mvn --version"
   changed_when: no
-  register: maven_version
+  register: maven_version_out
   tags:
     - maven
     - maven_test
@@ -121,7 +130,7 @@
 
 - name: display Maven version
   debug:
-    msg: "molecule login{{ maven_version.stdout }}"
+    msg: "molecule login{{ maven_version_out.stdout }}"
 
 - name: check if maven settings-security has been set
   stat:
@@ -157,6 +166,8 @@
       owner: root
     - dir: "/root/.m2"
       owner: root
+    - dir: ".m2"
+      owner: "{{ ansible_user | default('root') }}"
   when: not maven_setting_installed.stat.exists
   tags:
     - config
@@ -177,12 +188,17 @@
   become: yes
   template:
     src: settings.xml
-    dest: "{{ item }}/.m2/settings.xml"
-    owner: root
+    dest: "{{ item.dir }}/settings.xml"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
     mode: 0644
   with_items:
-    - /root
-    - "{{ maven_location }}"
+    - dir: "{{ maven_location }}/.m2"
+      owner: root
+    - dir: "/root/.m2"
+      owner: root
+    - dir: ".m2"
+      owner: "{{ ansible_user | default('root') }}"
   tags:
     - config
     - maven
@@ -197,4 +213,21 @@
     mode: 0644
   tags:
     - config
+    - maven
+
+- name: ensure directory exists
+  file:
+    path: /root
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  tags:
+    - maven
+
+- name: copy goss tests template
+  template:
+    src: test_maven.yml.j2
+    dest: /root/test_maven.yml
+  tags:
     - maven

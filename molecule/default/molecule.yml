@@ -1,21 +1,23 @@
 ---
-# Standards: 0.2
+
 dependency:
   name: galaxy
   requirements_file: requirements.yml
 driver:
   name: docker
-lint:
-  name: yamllint
+verifier:
+  name: goss
+  lint:
+    name: yamllint
 platforms:
   - name: base-maven-centos7
-    image: milcom/centos7-systemd
+    image: centos:7
     privileged: True
   - name: base-maven-centos6
     image: centos:6
     privileged: true
   - name: base-maven-ubuntu
-    image: ubuntu
+    image: ubuntu:xenial
     privileged: True
 provisioner:
   name: ansible
