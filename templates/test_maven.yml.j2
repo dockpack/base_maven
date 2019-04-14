@@ -1,7 +1,7 @@
 file:
   /etc/profile.d/maven.sh:
     exists: true
-  {{ maven_location }}/./m2/settings-security.xml:
+  {{ maven_location }}/.m2/settings-security.xml:
     exists: true
     mode: "0600"
     filetype: file
