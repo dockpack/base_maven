@@ -122,7 +122,7 @@
     JAVA_HOME: "{{ java8_home }}"
   command: "{{ maven_home }}/bin/mvn --version"
   changed_when: no
-  register: maven_version
+  register: maven_version_out
   tags:
     - maven
     - maven_test
@@ -130,7 +130,7 @@
 
 - name: display Maven version
   debug:
-    msg: "molecule login{{ maven_version.stdout }}"
+    msg: "molecule login{{ maven_version_out.stdout }}"
 
 - name: check if maven settings-security has been set
   stat:

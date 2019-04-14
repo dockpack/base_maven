@@ -8,8 +8,6 @@ file:
   {{ maven_location }}/apache-maven-{{ maven_version }}/bin/mvn:
     exists: true
     mode: "0755"
-    contains:
-      - 'Apache Maven Startup Script'
   {{ maven_location }}/.m2/settings.xml
     exists: true
     mode: "0644"
