@@ -58,7 +58,10 @@
     src: "{{  maven_url }}"
     dest: "{{  maven_location }}"
     copy: no
-  retries: 3
+  register: network_access
+  until: network_access is success
+  retries: 10
+  delay: 2
   when: not mvn_installed.stat.exists
   tags:
     - maven
