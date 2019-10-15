@@ -9,6 +9,7 @@
     - config
     - maven
     - test
+    - symlink
 
 - name: set maven_home
   set_fact:
@@ -17,6 +18,7 @@
     - config
     - maven
     - test
+    - symlink
 
 - name: make sure directory for Maven exists
   file:
@@ -226,6 +228,18 @@
     group: root
     mode: 0700
   tags:
+    - maven
+
+- name: ensure current symlink exists
+  file:
+    src: "{{ maven_home }}"
+    dest: /opt/maven/current
+    state: link
+    owner: root
+    group: root
+    mode: 0666
+  tags:
+    - symlink
     - maven
 
 - name: copy goss tests template
