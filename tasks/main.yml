@@ -211,8 +211,8 @@
 
 - name: install /etc/profile.d/maven.sh
   template:
-    src: 'maven.sh.j2'
-    dest: '/etc/profile.d/maven.sh'
+    src: maven.sh.j2
+    dest: /etc/profile.d/maven.sh
     owner: root
     group: root
     mode: 0644
@@ -237,7 +237,6 @@
     state: link
     owner: root
     group: root
-    mode: 0666
   tags:
     - symlink
     - maven
