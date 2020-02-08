@@ -1,5 +1,5 @@
 [![Galaxy](https://img.shields.io/badge/galaxy-dockpack.base__maven-blue.svg?style=flat)](https://galaxy.ansible.com/dockpack/base_maven)
-![Build Status](https://api.travis-ci.org/dockpack/base_maven.svg)
+![Build Status](https://travis-ci.com/dockpack/base_maven.svg?branch=master)
 
 Maven - Maven is good at building Java projects in a cross-platform way. It manages dependencies, and actually the whole life cycle of a project. This is an ansible-role to install Maven.
 
