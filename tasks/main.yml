@@ -60,6 +60,7 @@
     src: "{{  maven_url }}"
     dest: "{{  maven_location }}"
     copy: no
+    mode: 0755
   register: network_access
   until: network_access is success
   retries: 10
@@ -237,13 +238,16 @@
     state: link
     owner: root
     group: root
+    mode: 0777
   tags:
     - symlink
     - maven
+    - notest
 
 - name: copy goss tests template
   template:
     src: test_maven.yml.j2
     dest: /root/test_maven.yml
+    mode: 0644
   tags:
     - maven
