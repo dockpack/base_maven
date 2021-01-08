@@ -13,9 +13,6 @@ platforms:
   - name: base-maven-centos7
     image: centos:7
     privileged: True
-  - name: base-maven-centos6
-    image: centos:6
-    privileged: true
   - name: base-maven-ubuntu
     image: ubuntu:xenial
     privileged: True
