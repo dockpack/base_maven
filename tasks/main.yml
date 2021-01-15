@@ -59,7 +59,7 @@
   unarchive:
     src: "{{  maven_url }}"
     dest: "{{  maven_location }}"
-    copy: no
+    copy: false
     mode: 0755
   register: network_access
   until: network_access is success
@@ -127,7 +127,7 @@
   environment:
     JAVA_HOME: "{{ java8_home }}"
   command: "{{ maven_home }}/bin/mvn --version"
-  changed_when: no
+  changed_when: false
   register: maven_version_out
   tags:
     - maven
@@ -152,6 +152,7 @@
   environment:
     JAVA_HOME: "{{ java8_home }}"
   command:
+    # yamllint disable-line rule:line-length
     "{{ maven_home }}/bin/mvn --encrypt-master-password {{ mvn_master_password | default(lookup('pipe','/usr/bin/openssl rand -base64 24')) }}"
   register: encrypted_mvn_password
   no_log: false
@@ -182,6 +183,7 @@
 - name: create repository password for Maven
   environment:
     JAVA_HOME: "{{ java8_home }}"
+  # yamllint disable-line rule:line-length
   command: "{{ maven_home }}/bin/mvn --encrypt-password '{{ mvn_repo_password |default(omit) }}'"
   no_log: false
   register: mvn_repository_password
@@ -191,7 +193,7 @@
     - maven
 
 - name: create settings.xml
-  become: yes
+  become: true
   template:
     src: settings.xml
     dest: "{{ item.dir }}/settings.xml"
