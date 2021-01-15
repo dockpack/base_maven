@@ -138,6 +138,11 @@
   debug:
     msg: "molecule login{{ maven_version_out.stdout }}"
 
+- name: install openssl
+  package:
+    name: openssl
+    state: present
+
 - name: check if maven settings-security has been set
   stat:
     path: '{{ maven_location }}/.m2/settings-security.xml'
