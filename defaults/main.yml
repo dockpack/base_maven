@@ -8,6 +8,7 @@ maven_version: 3.6.3
 
 maven_tarfile: "{{ maven_name }}-bin.tar.gz"
 maven_base_url: 'https://mirrors.ocf.berkeley.edu/apache/maven/maven-3/'
+# yamllint disable-line rule:line-length
 maven_url: "{{ maven_base_url }}/{{ maven_version }}/binaries/{{ maven_tarfile }}"
 maven_location: '/opt/maven'
 
