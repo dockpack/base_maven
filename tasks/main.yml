@@ -138,11 +138,6 @@
   debug:
     msg: "molecule login{{ maven_version_out.stdout }}"
 
-- name: install openssl
-  package:
-    name: openssl
-    state: present
-
 - name: check if maven settings-security has been set
   stat:
     path: '{{ maven_location }}/.m2/settings-security.xml'
@@ -158,7 +153,7 @@
     JAVA_HOME: "{{ java8_home }}"
   command:
     # yamllint disable-line rule:line-length
-    "{{ maven_home }}/bin/mvn --encrypt-master-password {{ mvn_master_password | default(lookup('pipe','/usr/bin/openssl rand -base64 24')) }}"
+    "{{ maven_home }}/bin/mvn --encrypt-master-password {{ mvn_master_password }}"
   register: encrypted_mvn_password
   no_log: false
   when: not maven_setting_installed.stat.exists
