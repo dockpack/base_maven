@@ -11,7 +11,7 @@ lint: |
   ansible-lint
 platforms:
   - name: base-maven-centos7
-    image: centos:7
+    image: milcom/centos7-systemd
     privileged: true
   - name: base-maven-ubuntu
     image: ubuntu:xenial
