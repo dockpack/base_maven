@@ -10,7 +10,7 @@ This role was built for Ubuntu Trusty or RedHat systems like RHEL/Centos 7. It n
 
 Role Variables
 --------------
-You can set the maven\_version:, now 3.5.0
+You can set the maven\_version:, now 3.6.3
 
 There are 3 variables that you would store in a vault file:
 
@@ -37,6 +37,7 @@ Example of how to use this role:
 
     - hosts: servers
       roles:
+         - { role: dockpack.base_java8 }
          - { role: dockpack.base_maven }
 
 License
