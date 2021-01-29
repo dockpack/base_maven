@@ -1,5 +1,12 @@
 ---
-# Standards: 0.2
 - hosts: all
+  vars:
+    base_jdk_alternatives:
+      - 'java-1.8.0'
+    java11_packages: []
+    java9_packages: []
+    java_latest_packages: []
   roles:
+    - role: base_common
+    - role: base_java8
     - role: base_maven
