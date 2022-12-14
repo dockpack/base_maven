@@ -1,22 +1,25 @@
 ---
 # Standards: 0.2
 galaxy_info:
+  role_name: base_maven
+  namespace: dockpack
   author: Bas Meijer
-  description: maven build system.
+  description: Maven build system - mvn.
   company: bbaassssiiee
 
   license: MIT
 
-  min_ansible_version: 2.4.0
+  min_ansible_version: "2.9.27"
 
   platforms:
     - name: EL
       versions:
-        - 6
-        - 7
+        - "6"
+        - "7"
+        - "8"
     - name: Ubuntu
       versions:
-        - xenial
+        - "xenial"
   galaxy_tags:
     - system
     - development
