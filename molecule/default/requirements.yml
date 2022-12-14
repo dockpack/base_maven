@@ -1,6 +1,4 @@
 ---
-- src: https://github.com/dockpack/base_common.git
-  name: base_common
-
 - src: https://github.com/dockpack/base_java8.git
-  name: base_java8
+  scm: git
+  name: dockpack.base_java8

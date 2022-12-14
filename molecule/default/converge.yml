@@ -1,12 +1,17 @@
 ---
-- hosts: all
+- name: Converge
+  hosts: all
+  gather_facts: true
+
   vars:
+    role_name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
     base_jdk_alternatives:
       - 'java-1.8.0'
     java11_packages: []
     java9_packages: []
     java_latest_packages: []
-  roles:
-    - role: base_common
-    - role: base_java8
-    - role: base_maven
+
+  tasks:
+    - name: "Include {{ role_name }}"
+      ansible.builtin.include_role:
+        name: "{{ role_name }}"
