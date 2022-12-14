@@ -1,0 +1,47 @@
+<repositories>
+	<repository>
+		<id>
+			repo
+		</id>
+		<name>
+			Nexus3 repository
+		</name>
+		<url>
+			https://nexus.example.com/nexus/repository/repo
+		</url>
+		<releases>
+			<enabled>
+				true
+			</enabled>
+		</releases>
+		<snapshots>
+			<enabled>
+				true
+			</enabled>
+		</snapshots>
+	</repository>
+</repositories>
+<distributionmanagement>
+	<repository>
+		<id>
+			releases
+		</id>
+		<name>
+			releases
+		</name>
+		<url>
+			https://nexus.example.com/nexus/repository/releases/
+		</url>
+	</repository>
+	<snapshotrepository>
+		<id>
+			snapshots
+		</id>
+		<name>
+			snapshots
+		</name>
+		<url>
+			https://nexus.example.com/nexus/repository/snapshots/
+		</url>
+	</snapshotrepository>
+</distributionmanagement>
