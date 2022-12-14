@@ -10,11 +10,17 @@ lint: |
   yamllint .
   ansible-lint
 platforms:
-  - name: base-maven-centos7
-    image: milcom/centos7-systemd
+  - name: base-maven-centos8
+    image: quay.io/centos/centos:stream8
     privileged: true
-  - name: base-maven-ubuntu
-    image: ubuntu:xenial
+  - name: base-maven-centos7
+    image: centos:7
+    privileged: true
+  - name: base-maven-focal
+    image: ubuntu:focal
+    privileged: true
+  - name: base-maven-bionic
+    image: ubuntu:bionic
     privileged: true
 provisioner:
   name: ansible

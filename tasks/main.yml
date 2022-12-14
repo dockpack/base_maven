@@ -2,7 +2,7 @@
 
 ### Maven
 
-- name: set maven_name
+- name: Set maven_name
   set_fact:
     maven_name: "apache-maven-{{ maven_version }}"
   tags:
@@ -11,7 +11,7 @@
     - test
     - symlink
 
-- name: set maven_home
+- name: Set maven_home
   set_fact:
     maven_home: "{{ maven_location }}/{{ maven_name }}"
   tags:
@@ -20,7 +20,7 @@
     - test
     - symlink
 
-- name: make sure directory for Maven exists
+- name: Make sure directory for Maven exists
   file:
     dest: "{{ maven_home }}"
     state: directory
@@ -30,7 +30,7 @@
   tags:
     - maven
 
-- name: verify presence of maven
+- name: Verify presence of maven
   stat:
     path: "{{ maven_home }}/bin/mvn"
   register: mvn_installed
@@ -38,7 +38,7 @@
     - config
     - maven
 
-- name: install maven facts
+- name: Install maven facts
   template:
     src: maven.fact
     dest: /etc/ansible/facts.d/maven.fact
@@ -49,15 +49,20 @@
     - config
     - maven
 
-- name: reload local facts
+- name: Reload local facts
   setup:
   tags:
     - config
     - test
 
-- name: unarchive maven
+- name: Set java8_home
+  set_fact:
+    java8_home: "{{ ansible_facts.ansible_local.java8.java8.java8_home }}"
+
+- name: Unarchive maven
   unarchive:
     src: "{{  maven_url }}"
+    validate_certs: "{{ maven_tls_check }}"
     dest: "{{  maven_location }}"
     copy: false
     mode: 0755
@@ -69,7 +74,7 @@
   tags:
     - maven
 
-- name: fix maven permissions
+- name: Fix maven permissions
   file:
     dest: "{{ maven_home }}/{{ item }}"
     state: directory
@@ -81,7 +86,7 @@
     - config
     - maven
 
-- name: make sure .m2 directory exists
+- name: Ensure .m2 directory exists
   file:
     path: ".m2"
     mode: 0700
@@ -90,7 +95,7 @@
     - config
     - maven
 
-- name: make sure .m2 directory exists
+- name: Ensure /root/.m2 directory exists
   file:
     path: "{{ maven_location }}/.m2"
     owner: root
@@ -101,7 +106,7 @@
     - config
     - maven
 
-- name: make sure /root/.m2 directory exists
+- name: Ensure /root/.m2 directory exists
   file:
     path: '/root/.m2'
     owner: root
@@ -114,7 +119,7 @@
 
 - name: Test for presence of maven
   environment:
-    JAVA_HOME: "{{ java8_home }}"
+    JAVA_HOME:
   stat:
     path: "{{ maven_home }}/bin/mvn"
   tags:
@@ -134,7 +139,7 @@
     - maven_test
     - test
 
-- name: display Maven version
+- name: Display Maven version
   debug:
     msg: "molecule login{{ maven_version_out.stdout }}"
 
@@ -148,20 +153,20 @@
     - maven_test
     - test
 
-- name: create master password for Maven
+- name: Create master password for Maven
   environment:
     JAVA_HOME: "{{ java8_home }}"
   command:
     # yamllint disable-line rule:line-length
     "{{ maven_home }}/bin/mvn --encrypt-master-password {{ mvn_master_password }}"
   register: encrypted_mvn_password
-  no_log: false
+  no_log: true
   when: not maven_setting_installed.stat.exists
   tags:
     - config
     - maven
 
-- name: install settings-security.xml
+- name: Install settings-security.xml
   template:
     src: settings-security.xml
     dest: "{{ item.dir }}"
@@ -180,19 +185,19 @@
     - config
     - maven
 
-- name: create repository password for Maven
+- name: Create repository password for Maven
   environment:
     JAVA_HOME: "{{ java8_home }}"
   # yamllint disable-line rule:line-length
   command: "{{ maven_home }}/bin/mvn --encrypt-password '{{ mvn_repo_password |default(omit) }}'"
-  no_log: false
+  no_log: true
   register: mvn_repository_password
   when: not maven_setting_installed.stat.exists
   tags:
     - config
     - maven
 
-- name: create settings.xml
+- name: Create settings.xml
   become: true
   template:
     src: settings.xml
@@ -212,7 +217,7 @@
     - maven
   when: not maven_setting_installed.stat.exists
 
-- name: install /etc/profile.d/maven.sh
+- name: Install /etc/profile.d/maven.sh
   template:
     src: maven.sh.j2
     dest: /etc/profile.d/maven.sh
@@ -223,7 +228,7 @@
     - config
     - maven
 
-- name: ensure directory exists
+- name: Ensure directory exists
   file:
     path: /root
     state: directory
@@ -233,7 +238,7 @@
   tags:
     - maven
 
-- name: ensure current symlink exists
+- name: Ensure current symlink exists
   file:
     src: "{{ maven_home }}"
     dest: /opt/maven/current
@@ -246,7 +251,7 @@
     - maven
     - notest
 
-- name: copy goss tests template
+- name: Copy goss tests template
   template:
     src: test_maven.yml.j2
     dest: /root/test_maven.yml

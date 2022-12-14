@@ -1,0 +1,11 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  vars:
+    collections_enabled: true
+
+  tasks:
+    - name: "Include dockpack.base_java8"
+      ansible.builtin.include_role:
+        name: dockpack.base_java8
