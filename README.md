@@ -26,7 +26,12 @@ Dependencies
 
 Maven needs Java8. This role depends on dockpack.base_java8, which will be installed automatically if you use this one.
 
+Manual use of Maven
 
+
+```
+mvn -X deploy:deploy-file -DgroupId=$GROUPID -DartifactId=$FILENAME -Dversion=$VERSION -DgeneratePom=true -Dpackaging=jar -DrepositoryId="0ss-releases" -Durl="https://repo.example.com/path/releases" -Dfile=redis.jar
+```
 
 Example Playbook
 ----------------
