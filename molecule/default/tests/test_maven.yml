@@ -12,7 +12,7 @@ file:
     mode: "0644"
     contains:
       - 'https://oss.sonatype.org/content/repositories/snapshots'
-  /opt/maven/apache-maven-3.6.3/bin/mvn:
+  /opt/maven/apache-maven-3.9.2/bin/mvn:
     exists: true
     mode: "0755"
     contains:
