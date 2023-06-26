@@ -4,7 +4,7 @@ mvn_master_password: you_need_to_set_this_in_your_secrets_file
 mvn_repo_username: deployer
 mvn_repo_password: encryptit
 
-maven_version: 3.9.2
+maven_version: 3.9.3
 
 maven_tarfile: "{{ maven_name }}-bin.tar.gz"
 maven_base_url: 'https://mirrors.ocf.berkeley.edu/apache/maven/maven-3/'
