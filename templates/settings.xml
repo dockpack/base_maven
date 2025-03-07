@@ -3,12 +3,12 @@
   <localRepository>{{ maven_location }}/repository</localRepository>
   <servers>
     <server>
-      <id>deploy</id>
+      <id>{{ mvn_repo_id }}</id>
       <username>{{ mvn_repo_username }}</username>
       <password>{{ mvn_repository_password.stdout }}</password>
     </server>
     <server>
-      <id>develop</id>
+      <id>{{ mvn_repo_id }}</id>
       <username>{{ mvn_repo_username }}</username>
       <password>{{ mvn_repository_password.stdout }}</password>
     </server>
